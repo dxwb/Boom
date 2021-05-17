@@ -120,14 +120,14 @@
   })
 
   // context for MatterTools.Demo
-  return {
-    engine: engine,
-    runner: runner,
-    render: render,
-    canvas: render.canvas,
-    stop: function () {
-      Matter.Render.stop(render)
-      Matter.Runner.stop(runner)
-    }
-  }
+  // return {
+  //   engine: engine,
+  //   runner: runner,
+  //   render: render,
+  //   canvas: render.canvas,
+  //   stop: function () {
+  //     Matter.Render.stop(render)
+  //     Matter.Runner.stop(runner)
+  //   }
+  // }
 })()
