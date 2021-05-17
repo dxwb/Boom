@@ -34,6 +34,8 @@
     enabled: false
   })
   Runner.run(runner, engine)
+  boomStore.runner = runner
+  boomStore.render = render
 
   // add bodies
   Composite.add(world, [

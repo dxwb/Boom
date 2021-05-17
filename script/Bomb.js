@@ -1,4 +1,4 @@
-(function(Bodies, Body, Vector, Common){
+(function(Bodies, Body, Vector, Common, Events){
   const Bomb = {
     create(x = 0, y = 0) {
       const bomb = Bodies.circle(x, y, 20)
@@ -85,6 +85,13 @@
         bomb.position.y = point.y
         this._explosion(bomb, bomb.explosionBodies)
       })
+
+      Events.on(boomStore.render, 'afterRender', this.handleAfterRender.bind(bomb))
+    },
+    handleAfterRender(ev) {
+      if (ev.timestamp < 300) {
+        console.log(ev)
+      }
     },
     _destroy(bomb) {
       bomb.beforeDestroy()
@@ -97,5 +104,6 @@
   Matter.Bodies,
   Matter.Body,
   Matter.Vector,
-  Matter.Common
+  Matter.Common,
+  Matter.Events
 )
