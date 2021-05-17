@@ -16,14 +16,22 @@
     }
     .bomb {
       position: fixed;
-      width: 30px;
-      height: 30px;
-      background-color: #6cf;
-      border-radius: 100px;
+      width: 40px;
+      height: 40px;
+      background: no-repeat center/100% 100%;
       cursor: grab;
     }
     .bomb:active {
       cursor: grabbing;
+    }
+    .bomb.b1 {
+      background-image: url(./images/bomb1.png);
+    }
+    .bomb.b2 {
+      background-image: url(./images/bomb2.png);
+    }
+    .bomb.b3 {
+      background-image: url(./images/bomb3.png);
     }
   </style>
 </head>

@@ -1,7 +1,7 @@
-(function(Bodies, Body, Vector){
+(function(Bodies, Body, Vector, Common){
   const Bomb = {
     create(x = 0, y = 0) {
-      const bomb = Bodies.circle(x, y, 15)
+      const bomb = Bodies.circle(x, y, 20)
 
       bomb.$$dom = this._addDom()
       this._bind(bomb)
@@ -38,7 +38,7 @@
     },
     _addDom() {
       const dom = document.createElement('div')
-      dom.className = 'bomb'
+      dom.className = `bomb b${Common.choose([1, 2, 3])}`
       document.body.appendChild(dom)
       return dom
     },
@@ -50,8 +50,8 @@
       }
 
       dom.addEventListener('mousedown', ev => {
-        const x = ev.clientX - 15
-        const y = ev.clientY - 15
+        const x = ev.clientX - 20
+        const y = ev.clientY - 20
 
         mouse.dragging = true
         dom.style.left = `${x}px`
@@ -59,8 +59,8 @@
       })
 
       document.addEventListener('mousemove', ev => {
-        const x = ev.clientX - 15
-        const y = ev.clientY - 15
+        const x = ev.clientX - 20
+        const y = ev.clientY - 20
 
         if (mouse.dragging) {
           dom.style.left = `${x}px`
@@ -96,5 +96,6 @@
 })(
   Matter.Bodies,
   Matter.Body,
-  Matter.Vector
+  Matter.Vector,
+  Matter.Common
 )
