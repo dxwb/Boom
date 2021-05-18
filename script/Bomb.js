@@ -1,15 +1,45 @@
 (function(Bodies, Body, Vector, Common, Events){
-  const Bomb = {
-    create(x = 0, y = 0) {
-      const bomb = Bodies.circle(x, y, 20)
+  let fireworkFrame = 0
 
-      bomb.$$dom = this._addDom()
-      this._bind(bomb)
+  class Bomb {
+    constructor(
+      {
+        x = 0,
+        y = 0,
+        explosionBodies = [],
+        beforeExplosion = () => {},
+        beforeDestroy = () => {}
+      }
+    ) {
+      this.element = this._addDom()
+      this.matterBody = Bodies.circle(x, y, 20)
+      this.mouse = {
+        dragging: false
+      }
+      // 检测与爆炸射线碰撞的bodies
+      this.explosionBodies = explosionBodies
+      // 爆炸前的hook
+      this.beforeExplosion = beforeExplosion
+      // 销毁前的hook
+      this.beforeDestroy = beforeDestroy
 
-      return bomb
-    },
-    _explosion(bomb, bodies) {
-      bomb.beforeExplosion && bomb.beforeExplosion()
+      // 修正this
+      this.handleAfterRender = this.handleAfterRender.bind(this)
+      this.handleMouseMove = this.handleMouseMove.bind(this)
+      this.handleMouseUp = this.handleMouseUp.bind(this)
+
+      this._bind()
+    }
+
+    _renderFirework() {
+      const { position } = this
+    }
+
+    _explosion() {
+      const bomb = this.matterBody
+      const bodies = this.explosionBodies
+
+      this.beforeExplosion()
 
       const { position } = bomb
       const range = 1000
@@ -30,72 +60,79 @@
             _body = boomStore.bubbles.find(b => b.label === body.label)
           }
 
-          Body.applyForce(_body, point, Vector.mult(Vector.sub(verts[1], verts[0]), .001))
+          Body.applyForce(_body, point, Vector.mult(Vector.sub(verts[1], verts[0]), .0007))
         })
       }
 
+      this._renderFirework(bomb)
       this._destroy(bomb)
-    },
+    }
+
+    _bind() {
+      const { element } = this
+
+      element.addEventListener('mousedown', ev => {
+        const x = ev.clientX - 20
+        const y = ev.clientY - 20
+
+        this.mouse.dragging = true
+        element.style.left = `${x}px`
+        element.style.top = `${y}px`
+      })
+
+      document.addEventListener('mousemove', this.handleMouseMove)
+      document.addEventListener('mouseup', this.handleMouseUp)
+
+      Events.on(boomStore.render, 'afterRender', this.handleAfterRender)
+    }
+
+    handleMouseUp(ev) {
+      this.mouse.dragging = false
+
+      const point = boomStore.inCanvas({
+        x: ev.clientX,
+        y: ev.clientY
+      })
+
+      if (!point) {
+        alert('不对哦，你没有把炸弹放到聊天界面中呢 ~ ')
+        return
+      }
+
+      this.matterBody.position.x = point.x
+      this.matterBody.position.y = point.y
+      this._explosion()
+    }
+
+    handleMouseMove(ev) {
+      const x = ev.clientX - 20
+      const y = ev.clientY - 20
+
+      if (this.mouse.dragging) {
+        this.element.style.left = `${x}px`
+        this.element.style.top = `${y}px`
+      }
+    }
+
+    handleAfterRender() {
+      this._renderFirework()
+    }
+
     _addDom() {
       const dom = document.createElement('div')
       dom.className = `bomb b${Common.choose([1, 2, 3])}`
       document.body.appendChild(dom)
       return dom
-    },
-    _bind(bomb) {
-      const dom = bomb.$$dom
+    }
 
-      const mouse = {
-        dragging: false
-      }
+    _destroy() {
+      this.beforeDestroy()
 
-      dom.addEventListener('mousedown', ev => {
-        const x = ev.clientX - 20
-        const y = ev.clientY - 20
+      document.body.removeChild(this.element)
+      document.removeEventListener('mousemove', this.handleMouseMove)
+      document.removeEventListener('mouseup', this.handleMouseUp)
 
-        mouse.dragging = true
-        dom.style.left = `${x}px`
-        dom.style.top = `${y}px`
-      })
-
-      document.addEventListener('mousemove', ev => {
-        const x = ev.clientX - 20
-        const y = ev.clientY - 20
-
-        if (mouse.dragging) {
-          dom.style.left = `${x}px`
-          dom.style.top = `${y}px`
-        }
-      })
-
-      dom.addEventListener('mouseup', ev => {
-        mouse.dragging = false
-
-        const point = boomStore.inCanvas({
-          x: ev.clientX,
-          y: ev.clientY
-        })
-
-        if (!point) {
-          alert('不对哦，你没有把炸弹放到聊天界面中呢 ~ ')
-          return
-        }
-
-        bomb.position.x = point.x
-        bomb.position.y = point.y
-        this._explosion(bomb, bomb.explosionBodies)
-      })
-
-      Events.on(boomStore.render, 'afterRender', this.handleAfterRender.bind(bomb))
-    },
-    handleAfterRender(ev) {
-      if (ev.timestamp < 300) {
-        console.log(ev)
-      }
-    },
-    _destroy(bomb) {
-      bomb.beforeDestroy()
-      document.body.removeChild(bomb.$$dom)
+      Events.off(boomStore.render, 'afterRender', this.handleAfterRender)
     }
   }
 

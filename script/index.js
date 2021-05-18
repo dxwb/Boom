@@ -79,17 +79,15 @@
   ])
 
   ;(function initBomb() {
-    const bomb = Bomb.create()
-    bomb.explosionBodies = Composite.allBodies(engine.world)
-    bomb.beforeExplosion = beforeExplosion
-    bomb.beforeDestroy = beforeDestroy
-
-    function beforeExplosion() {
-      runner.enabled = true
-    }
-    function beforeDestroy() {
-      initBomb()
-    }
+    new Bomb({
+      explosionBodies: Composite.allBodies(engine.world),
+      beforeExplosion() {
+        runner.enabled = true
+      },
+      beforeDestroy() {
+        initBomb()
+      }
+    })
   })()
 
   // add mouse control
