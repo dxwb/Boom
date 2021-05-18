@@ -1,6 +1,4 @@
 (function(Bodies, Body, Vector, Common, Events){
-  let fireworkFrame = 0
-
   class Bomb {
     constructor(
       {
@@ -16,6 +14,7 @@
       this.mouse = {
         dragging: false
       }
+
       // 检测与爆炸射线碰撞的bodies
       this.explosionBodies = explosionBodies
       // 爆炸前的hook
@@ -24,15 +23,10 @@
       this.beforeDestroy = beforeDestroy
 
       // 修正this
-      this.handleAfterRender = this.handleAfterRender.bind(this)
       this.handleMouseMove = this.handleMouseMove.bind(this)
       this.handleMouseUp = this.handleMouseUp.bind(this)
 
       this._bind()
-    }
-
-    _renderFirework() {
-      const { position } = this
     }
 
     _explosion() {
@@ -40,6 +34,10 @@
       const bodies = this.explosionBodies
 
       this.beforeExplosion()
+      this._removeElement()
+
+      // 创建一个烟花并引爆
+      new Firework(this).run()
 
       const { position } = bomb
       const range = 1000
@@ -64,8 +62,7 @@
         })
       }
 
-      this._renderFirework(bomb)
-      this._destroy(bomb)
+      this._destroy()
     }
 
     _bind() {
@@ -82,11 +79,11 @@
 
       document.addEventListener('mousemove', this.handleMouseMove)
       document.addEventListener('mouseup', this.handleMouseUp)
-
-      Events.on(boomStore.render, 'afterRender', this.handleAfterRender)
     }
 
     handleMouseUp(ev) {
+      if (!this.mouse.dragging) return
+
       this.mouse.dragging = false
 
       const point = boomStore.inCanvas({
@@ -105,17 +102,13 @@
     }
 
     handleMouseMove(ev) {
+      if (!this.mouse.dragging) return
+
       const x = ev.clientX - 20
       const y = ev.clientY - 20
-
-      if (this.mouse.dragging) {
-        this.element.style.left = `${x}px`
-        this.element.style.top = `${y}px`
-      }
-    }
-
-    handleAfterRender() {
-      this._renderFirework()
+      
+      this.element.style.left = `${x}px`
+      this.element.style.top = `${y}px`
     }
 
     _addDom() {
@@ -125,14 +118,15 @@
       return dom
     }
 
+    _removeElement() {
+      document.body.removeChild(this.element)
+    }
+
     _destroy() {
       this.beforeDestroy()
 
-      document.body.removeChild(this.element)
       document.removeEventListener('mousemove', this.handleMouseMove)
       document.removeEventListener('mouseup', this.handleMouseUp)
-
-      Events.off(boomStore.render, 'afterRender', this.handleAfterRender)
     }
   }
 
