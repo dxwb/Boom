@@ -1,4 +1,4 @@
-(function(Bodies, Body, Vector, Common, Events){
+(function(Bodies, Body, Vector, Common, Bounds){
   class Bomb {
     constructor(
       {
@@ -63,6 +63,8 @@
       }
 
       this._destroy()
+
+      boomStore.shake()
     }
 
     _bind() {
@@ -136,5 +138,5 @@
   Matter.Body,
   Matter.Vector,
   Matter.Common,
-  Matter.Events
+  Matter.Bounds
 )

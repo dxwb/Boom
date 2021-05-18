@@ -23,7 +23,8 @@
     engine,
     options: {
       width: 400,
-      height: 600
+      height: 600,
+      hasBounds: true
     }
   })
 
@@ -36,6 +37,7 @@
   Runner.run(runner, engine)
   boomStore.runner = runner
   boomStore.render = render
+  boomStore.init()
 
   // add bodies
   Composite.add(world, [
@@ -106,18 +108,6 @@
 
   // keep the mouse in sync with rendering
   render.mouse = mouse
-
-  // fit the render viewport to the scene
-  Render.lookAt(render, {
-    min: {
-      x: 0,
-      y: 0
-    },
-    max: {
-      x: 400,
-      y: 600
-    }
-  })
 
   // context for MatterTools.Demo
   // return {
