@@ -7,7 +7,7 @@
         },
         render: {
           sprite: {
-            texture: '../images/avatar.jpg'
+            texture: '../images/avatar.png'
           }
         }
       })
