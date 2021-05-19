@@ -1,18 +1,23 @@
 (function(Vertices, Bodies){
-  const Bubble = {
-    create(x = 0, y = 0, label) {
-      const bubbleVertices = Vertices.fromPath('20 10 20 0 100 0 100 40 20 40 20 30 10 20')
+  class Bubble {
+    constructor({
+      x = 0,
+      y = 0,
+      contentWidth = 100,
+      contentHeight = 40,
+      label
+    }) {
+      const bubbleVertices = Vertices.fromPath(`20 10 20 0 ${contentWidth} 0 ${contentWidth} ${contentHeight} 20 ${contentHeight} 20 30 10 20`)
 
-      return Bodies.fromVertices(
+      this.matterBody = Bodies.fromVertices(
         x,
         y,
         bubbleVertices,
         {
           label,
           render: {
-            fillStyle: '#66ccff',
-            strokeStyle: '#ff6600',
-            lineWidth: 1
+            fillStyle: '#fff',
+            strokeStyle: '#ededed'
           }
         },
         true

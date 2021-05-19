@@ -68,11 +68,31 @@
   ])
 
   boomStore.bubbles = [
-    Bubble.create(120, 40, 'bubble1'),
-    Bubble.create(120, 100, 'bubble2'),
-    Bubble.create(120, 160, 'bubble3'),
-    Bubble.create(120, 220, 'bubble4'),
-    Bubble.create(120, 280, 'bubble5')
+    new Bubble({
+      x: 120,
+      y: 40,
+      label: 'bubble1'
+    }).matterBody,
+    new Bubble({
+      x: 120,
+      y: 100,
+      label: 'bubble2'
+    }).matterBody,
+    new Bubble({
+      x: 120,
+      y: 160,
+      label: 'bubble3'
+    }).matterBody,
+    new Bubble({
+      x: 120,
+      y: 220,
+      label: 'bubble4'
+    }).matterBody,
+    new Bubble({
+      x: 120,
+      y: 280,
+      label: 'bubble5'
+    }).matterBody
   ]
   Composite.add(world, [
     Avatar.create(40, 40),
