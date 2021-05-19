@@ -24,7 +24,8 @@
     options: {
       width: 400,
       height: 600,
-      hasBounds: true
+      hasBounds: true,
+      wireframes: false
     }
   })
 
@@ -53,6 +54,16 @@
     // 左
     Bodies.rectangle(0, 300, 1, 10000, {
       isStatic: true
+    }),
+
+    Bodies.rectangle(200, 300, 400, 600, {
+      isSensor: true,
+      isStatic: true,
+      render: {
+        sprite: {
+          texture: '../images/bg.jpg'
+        }
+      }
     })
   ])
 
