@@ -1,20 +1,22 @@
-(function(Vertices, Bodies){
+(function(Bodies){
   const Avatar = {
     create(x = 0, y = 0) {
-      const avatarVertices = Vertices.fromPath('0 0 40 0 40 40 0 40')
-
-      return Bodies.fromVertices(
-        x,
-        y,
-        avatarVertices,
-        {},
-        true
-      )
+      return Bodies.rectangle(x, y, 40, 40, {
+        chamfer: {
+          radius: 3
+        },
+        render: {
+          sprite: {
+            texture: '../images/avatar.jpg',
+            xScale: .5,
+            yScale: .5
+          }
+        }
+      })
     }
   }
 
   window.Avatar = Avatar
 })(
-  Matter.Vertices,
   Matter.Bodies
 )
