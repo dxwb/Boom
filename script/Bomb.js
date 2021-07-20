@@ -116,12 +116,12 @@
     _addDom() {
       const dom = document.createElement('div')
       dom.className = `bomb b${Common.choose([1, 2, 3])}`
-      document.body.appendChild(dom)
+      document.getElementById('p').appendChild(dom)
       return dom
     }
 
     _removeElement() {
-      document.body.removeChild(this.element)
+      document.getElementById('p').removeChild(this.element)
     }
 
     _destroy() {

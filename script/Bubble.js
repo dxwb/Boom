@@ -16,8 +16,8 @@
         {
           label,
           render: {
-            fillStyle: '#fff',
-            strokeStyle: '#ededed'
+            fillStyle: '#abc',
+            strokeStyle: '#cde'
           }
         },
         true
