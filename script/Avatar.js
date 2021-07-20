@@ -1,14 +1,19 @@
 (function(Bodies){
-  const Avatar = {
-    create(x = 0, y = 0) {
-      return Bodies.rectangle(x, y, 40, 40, {
+  const {
+    Sprite
+  } = PIXI
+
+  class Avatar {
+    constructor(x = 0, y = 0) {
+      this.pixiSprite = new Sprite(boomStore.app.loader.resources['../images/avatar.png'].texture)
+      this.pixiSprite.x = x
+      this.pixiSprite.y = y
+      this.pixiSprite.anchor.set(.5, .5)
+      boomStore.app.stage.addChild(this.pixiSprite)
+
+      this.matterBodies = Bodies.rectangle(x, y, 40, 40, {
         chamfer: {
           radius: 5
-        },
-        render: {
-          sprite: {
-            texture: '../images/avatar.png'
-          }
         }
       })
     }

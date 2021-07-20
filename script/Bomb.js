@@ -75,6 +75,7 @@
         const y = ev.clientY - 20
 
         this.mouse.dragging = true
+        element.style.position = 'fixed'
         element.style.left = `${x}px`
         element.style.top = `${y}px`
       })
@@ -93,6 +94,7 @@
         y: ev.clientY
       })
 
+      this.element.style.position = 'static'
       if (!point) {
         alert('不对哦，你没有把炸弹放到聊天界面中呢 ~ ')
         return
