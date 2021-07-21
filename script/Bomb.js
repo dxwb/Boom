@@ -59,7 +59,7 @@
             _body = boomStore.messages.map(msg => msg.bubble.matterBody).find(b => b.label === body.label)
           }
 
-          Body.applyForce(_body, point, Vector.mult(Vector.sub(verts[1], verts[0]), .0007))
+          Body.applyForce(_body, point, Vector.mult(Vector.sub(verts[1], verts[0]), .001))
         })
       }
 
