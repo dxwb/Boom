@@ -11,9 +11,18 @@
       margin: 0;
       user-select: none;
     }
+    .box {
+      position: relative;
+    }
     .box, #p {
       margin: 0 auto;
       width: 400px;
+    }
+    .box #engine {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
     }
     #p {
       height: 172px;
@@ -39,11 +48,13 @@
   </style>
 </head>
 <body>
-  <div class="box"></div>
+  <div class="box">
+    <canvas id="engine"></canvas>
+  </div>
   <div id="p">
     <p>把炸弹放到聊天框中试试看 ~</p>
   </div>
-  <script src="./node_modules/pixi.js/dist/browser/pixi.js"></script>
+  <script src="./node_modules/pixi.js-legacy/dist/browser/pixi-legacy.js"></script>
   <script src="./node_modules/matter-js/build/matter.js"></script>
   <script src="./node_modules/poly-decomp/build/decomp.js"></script>
   <script src="./js/raycast.js"></script>

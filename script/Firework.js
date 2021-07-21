@@ -19,10 +19,10 @@
       this.isExploded = true
     }
 
-    _renderFirework({ source }) {
+    _renderFirework() {
       if (!this.isExploded) return
 
-      const { context: ctx } = source
+      const { context: ctx } = boomStore.app.renderer
       const size = 300
       const frameSize = 128
       const { position } = this.bomb.matterBody

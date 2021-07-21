@@ -1,25 +1,28 @@
 (function(Vertices, Bodies){
+  const {
+    Sprite
+  } = PIXI
+
   class Bubble {
     constructor({
       x = 0,
       y = 0,
-      contentWidth = 100,
-      contentHeight = 40,
       label
     }) {
-      const bubbleVertices = Vertices.fromPath(`20 10 20 0 ${contentWidth} 0 ${contentWidth} ${contentHeight} 20 ${contentHeight} 20 30 10 20`)
+      this.pixiSprite = new Sprite(boomStore.app.loader.resources['../images/bubble1.png'].texture)
+      this.pixiSprite.x = x
+      this.pixiSprite.y = y
+      this.pixiSprite.anchor.set(.5, .5)
+      boomStore.app.stage.addChild(this.pixiSprite)
+
+      const { width, height } = this.pixiSprite
+      const bubbleVertices = Vertices.fromPath(`4 12 4 0 ${width - 4} 0 ${width - 4} ${height} 4 ${height} 4 21 0 16`)
 
       this.matterBody = Bodies.fromVertices(
         x,
         y,
         bubbleVertices,
-        {
-          label,
-          render: {
-            fillStyle: '#abc',
-            strokeStyle: '#cde'
-          }
-        },
+        { label },
         true
       )
     }

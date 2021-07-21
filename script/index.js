@@ -19,7 +19,8 @@
   const app = new Application({
     width: 400,
     height: 600,
-    forceCanvas: true
+    forceCanvas: true,
+    antialias: true
   })
   const { loader } = app
   document.querySelector('.box').appendChild(app.view)
@@ -27,7 +28,8 @@
 
   loader.add([
     '../images/avatar.png',
-    '../images/bg.jpg'
+    '../images/bg.jpg',
+    '../images/bubble1.png'
   ]).load(() => {
     // 加载背景
     const bg = new Sprite(loader.resources['../images/bg.jpg'].texture)
@@ -41,7 +43,7 @@
 
     // create renderer
     const render = Render.create({
-      element: document.getElementsByClassName('box')[0],
+      canvas: document.querySelector('#engine'),
       engine,
       options: {
         width: 400,
@@ -76,16 +78,6 @@
       // 左
       Bodies.rectangle(0, 300, 1, 10000, {
         isStatic: true
-      }),
-
-      Bodies.rectangle(200, 300, 400, 600, {
-        isSensor: true,
-        isStatic: true,
-        render: {
-          sprite: {
-            texture: '../images/bg.jpg'
-          }
-        }
       })
     ])
 
@@ -94,29 +86,28 @@
         x: 120,
         y: 40,
         label: 'bubble1'
-      }).matterBody,
+      }),
       new Bubble({
         x: 120,
         y: 100,
         label: 'bubble2'
-      }).matterBody,
+      }),
       new Bubble({
         x: 120,
         y: 160,
         label: 'bubble3'
-      }).matterBody,
+      }),
       new Bubble({
         x: 120,
         y: 220,
         label: 'bubble4'
-      }).matterBody,
+      }),
       new Bubble({
         x: 120,
         y: 280,
         label: 'bubble5'
-      }).matterBody
+      })
     ]
-  
     const avatars = [
       new Avatar(40, 40),
       new Avatar(40, 100),
@@ -125,12 +116,8 @@
       new Avatar(40, 280)
     ]
     Composite.add(world, [
-      ...avatars.map(el => el.matterBodies),
-      boomStore.bubbles[0],
-      boomStore.bubbles[1],
-      boomStore.bubbles[2],
-      boomStore.bubbles[3],
-      boomStore.bubbles[4]
+      ...avatars.map(el => el.matterBody),
+      ...boomStore.bubbles.map(el => el.matterBody)
     ])
 
     ;(function initBomb() {
@@ -162,13 +149,21 @@
     // keep the mouse in sync with rendering
     render.mouse = mouse
 
-    Events.on(engine, 'afterUpdate', ev => {
+    Events.on(engine, 'afterUpdate', () => {
       avatars.forEach(avatar => {
         avatar.pixiSprite.position.set(
-          avatar.matterBodies.position.x,
-          avatar.matterBodies.position.y
+          avatar.matterBody.position.x,
+          avatar.matterBody.position.y
         )
-        avatar.pixiSprite.rotation = avatar.matterBodies.angle
+        avatar.pixiSprite.rotation = avatar.matterBody.angle
+      })
+
+      boomStore.bubbles.forEach(bubble => {
+        bubble.pixiSprite.position.set(
+          bubble.matterBody.position.x,
+          bubble.matterBody.position.y
+        )
+        bubble.pixiSprite.rotation = bubble.matterBody.angle
       })
     })
   })

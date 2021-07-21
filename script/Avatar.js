@@ -11,7 +11,7 @@
       this.pixiSprite.anchor.set(.5, .5)
       boomStore.app.stage.addChild(this.pixiSprite)
 
-      this.matterBodies = Bodies.rectangle(x, y, 40, 40, {
+      this.matterBody = Bodies.rectangle(x, y, 40, 40, {
         chamfer: {
           radius: 5
         }

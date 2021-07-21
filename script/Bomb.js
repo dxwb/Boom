@@ -55,7 +55,7 @@
           let _body = body
 
           if (body.label.includes('bubble')) {
-            _body = boomStore.bubbles.find(b => b.label === body.label)
+            _body = boomStore.bubbles.find(b => b.matterBody.label === body.label).matterBody
           }
 
           Body.applyForce(_body, point, Vector.mult(Vector.sub(verts[1], verts[0]), .0007))
