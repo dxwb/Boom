@@ -14,11 +14,13 @@
     }
 
     createMatterBody() {
-      this.matterBody = Bodies.rectangle(this.x, this.y, 40, 40, {
+      this.matterBody = Bodies.rectangle(this.pixiSprite.x, this.pixiSprite.y, 40, 40, {
         chamfer: {
           radius: 5
         }
       })
+
+      return this.matterBody
     }
   }
 

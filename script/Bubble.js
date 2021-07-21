@@ -9,8 +9,6 @@
       y = 0,
       label
     }) {
-      this.x = x
-      this.y = y
       this.label = label
       this.pixiSprite = new Sprite(boomStore.app.loader.resources['../images/bubble1.png'].texture)
       this.pixiSprite.x = x
@@ -23,12 +21,14 @@
       const bubbleVertices = Vertices.fromPath(`4 12 4 0 ${width} 0 ${width} ${height} 4 ${height} 4 21 0 16`)
 
       this.matterBody = Bodies.fromVertices(
-        this.x,
-        this.y,
+        this.pixiSprite.x,
+        this.pixiSprite.y,
         bubbleVertices,
         { label: this.label },
         true
       )
+
+      return this.matterBody
     }
   }
 

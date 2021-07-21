@@ -97,28 +97,27 @@
       new Message(40, 460, 'bubble5'),
       new Message(40, 520, 'bubble5')
     ]
-    const messageContainer = new Container()
-
-    messageContainer.addChild(
+    app.stage.addChild(
       ...messages.map(msg => msg.avatar.pixiSprite),
       ...messages.map(msg => msg.bubble.pixiSprite)
     )
-    app.stage.addChild(messageContainer)
 
     // 添加到全局对象中
     boomStore.messages = messages
-    boomStore.messageContainer = messageContainer
-
-    // Composite.add(world, [
-    //   ...messages.map(el => el.avatar.matterBody),
-    //   ...messages.map(el => el.bubble.matterBody)
-    // ])
 
     ;(function initBomb() {
-      new Bomb({
-        explosionBodies: Composite.allBodies(engine.world),
+      const bomb = new Bomb({
         beforeExplosion() {
+          if (!runner.enabled) {
+            messages.forEach(msg => {
+              Composite.add(world, msg.avatar.createMatterBody())
+              Composite.add(world, msg.bubble.createMatterBody())
+            })
+          }
+
           runner.enabled = true
+
+          bomb.explosionBodies = Composite.allBodies(engine.world)
         },
         beforeDestroy() {
           initBomb()
