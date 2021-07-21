@@ -30,10 +30,11 @@
     }
 
     _explosion() {
+      this.beforeExplosion()
+
       const bomb = this.matterBody
       const bodies = this.explosionBodies
 
-      this.beforeExplosion()
       this._removeElement()
 
       // 创建一个烟花并引爆
@@ -55,7 +56,7 @@
           let _body = body
 
           if (body.label.includes('bubble')) {
-            _body = boomStore.bubbles.find(b => b.matterBody.label === body.label).matterBody
+            _body = boomStore.messages.map(msg => msg.bubble.matterBody).find(b => b.label === body.label)
           }
 
           Body.applyForce(_body, point, Vector.mult(Vector.sub(verts[1], verts[0]), .0007))

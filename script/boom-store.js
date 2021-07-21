@@ -1,4 +1,4 @@
-((Events, Bounds, Common) => {
+((Events, Common) => {
   let isShake = false
   let shakeStamp = 0
 
@@ -8,18 +8,15 @@
         if (!isShake) return
 
         if (shakeStamp > 20) {
-          Bounds.shift(boomStore.render.bounds, {
-            x: 0,
-            y: 0
-          })
+          this.app.stage.position.set(0, 0)
 
           isShake = false
           shakeStamp = 0
         } else {
-          Bounds.shift(boomStore.render.bounds, {
-            x: Common.choose([5, 10]) * (shakeStamp % 2 === 0 ? -1 : 1),
-            y: Common.choose([5, 10]) * (shakeStamp++ % 2 === 0 ? -1 : 1)
-          })
+          this.app.stage.position.set(
+            Common.choose([2, 6]) * (shakeStamp % 2 === 0 ? -1 : 1),
+            Common.choose([2, 6]) * (shakeStamp++ % 2 === 0 ? -1 : 1)
+          )
         }
       })
     },
@@ -27,7 +24,7 @@
     // 如果在canvas中，返回于canvas中的坐标系
     // 否则返回false
     inCanvas({ x, y }) {
-      const canvas = document.getElementsByTagName('canvas')[0]
+      const canvas = document.getElementsByTagName('canvas')[1]
       const rect = canvas.getBoundingClientRect()
 
       if (x >= rect.x && x <= rect.x + rect.width) {
@@ -45,10 +42,10 @@
     shake(){
       isShake = true
       shakeStamp = 0
-    }
+    },
+    onPostRenderListener: []
   }
 })(
   Matter.Events,
-  Matter.Bounds,
   Matter.Common
 )
