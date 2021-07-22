@@ -87,15 +87,7 @@
     ])
 
     const messages = [
-      new Message(40, 40, 'bubble1'),
-      new Message(40, 100, 'bubble2'),
-      new Message(40, 160, 'bubble3'),
-      new Message(40, 220, 'bubble4'),
-      new Message(40, 280, 'bubble5'),
-      new Message(40, 340, 'bubble5'),
-      new Message(40, 400, 'bubble5'),
-      new Message(40, 460, 'bubble5'),
-      new Message(40, 520, 'bubble5')
+      new Message(40, 40, 'bubble1')
     ]
     app.stage.addChild(
       ...messages.map(msg => msg.avatar.pixiSprite),

@@ -33,11 +33,18 @@
 
   document.getElementById('btn').addEventListener('click', () => {
     const { app, messages } = boomStore
-    const msg = new Message(40, 9 * 60 + 40, 'labelp')
+    const msg = new Message(
+      40,
+      Math.min(9, messages.length) * 60 + 40,
+      `label${Date.now()}`
+    )
+
+    if (messages.length >= 9) {
+      isOffset = true
+    }
+
     app.stage.addChild(msg.avatar.pixiSprite, msg.bubble.pixiSprite)
     messages.push(msg)
-
-    isOffset = true
   })
 
   window.Message = Message
